@@ -1,0 +1,11 @@
+C:\Users\julio\OneDrive\Escritorio\Portfolio\trading_web3\crypto_service\target\debug\deps\libprost-33717ee7595accee.rmeta: C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\lib.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\error.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\message.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\name.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\types.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\encoding.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\../README.md
+
+C:\Users\julio\OneDrive\Escritorio\Portfolio\trading_web3\crypto_service\target\debug\deps\prost-33717ee7595accee.d: C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\lib.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\error.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\message.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\name.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\types.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\encoding.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\../README.md
+
+C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\lib.rs:
+C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\error.rs:
+C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\message.rs:
+C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\name.rs:
+C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\types.rs:
+C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\encoding.rs:
+C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\prost-0.12.6\src\../README.md:

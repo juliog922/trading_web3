@@ -15,8 +15,3 @@ tonic = "0.11.0"
 
 [build-dependencies]
 tonic-build = "0.11.0"
-
-
-[[bin]]
-name = "server"
-path = "./src/auth_server.rs"
