@@ -1,2 +1,2 @@
-cargo:rerun-if-changed=../common/proto/auth_service.proto
-cargo:rerun-if-changed=../common/proto/
+cargo:rerun-if-changed=./common/proto/auth_service.proto
+cargo:rerun-if-changed=./common/proto/

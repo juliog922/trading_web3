@@ -6,12 +6,15 @@ use crate::auth_service::{
     auth_server::Auth,
     AuthenticationAnswerRequest, AuthenticationAnswerResponse,RegisterRequest, RegisterResponse,
 };
+
+/// Implementation of the authentication service.
 #[derive(Debug, Default)]
 pub struct AuthImpl {
     pub user_info: Mutex<HashMap<String, UserInfo>>,
     pub auth_id_to_user: Mutex<HashMap<String, String>>,
 }
 
+/// Structure representing user information.
 #[derive(Debug, Default)]
 pub struct UserInfo {
     // registration

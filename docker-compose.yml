@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  crypto_service:
+    build:
+      context: ./crypto_service
+      dockerfile: Dockerfile
+    ports:
+      - "50051:50051"
+    networks:
+      - trading_web3_network
+
+networks:
+  trading_web3_network:
+    driver: bridge

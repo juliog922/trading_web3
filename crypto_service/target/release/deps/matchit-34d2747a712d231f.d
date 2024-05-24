@@ -1,0 +1,11 @@
+C:\Users\julio\OneDrive\Escritorio\Portfolio\trading_web3\crypto_service\target\release\deps\libmatchit-34d2747a712d231f.rmeta: C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\lib.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\error.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\params.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\router.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\tree.rs
+
+C:\Users\julio\OneDrive\Escritorio\Portfolio\trading_web3\crypto_service\target\release\deps\libmatchit-34d2747a712d231f.rlib: C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\lib.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\error.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\params.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\router.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\tree.rs
+
+C:\Users\julio\OneDrive\Escritorio\Portfolio\trading_web3\crypto_service\target\release\deps\matchit-34d2747a712d231f.d: C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\lib.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\error.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\params.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\router.rs C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\tree.rs
+
+C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\lib.rs:
+C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\error.rs:
+C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\params.rs:
+C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\router.rs:
+C:\Users\julio\.cargo\registry\src\index.crates.io-6f17d22bba15001f\matchit-0.7.3\src\tree.rs:
