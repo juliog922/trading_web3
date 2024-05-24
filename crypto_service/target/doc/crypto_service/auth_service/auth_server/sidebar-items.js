@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["AuthServer","_Inner"],"trait":["Auth"]};

@@ -1,1 +1,0 @@
-/crypto_service/target/release/crypto_service: /crypto_service/build.rs /crypto_service/./common/proto/ /crypto_service/./common/proto/auth_service.proto /crypto_service/src/auth/auth_service.rs /crypto_service/src/auth/authimpl.rs /crypto_service/src/auth/zkp.rs /crypto_service/src/main.rs /crypto_service/src/test/mod.rs
