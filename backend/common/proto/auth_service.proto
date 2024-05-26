@@ -1,0 +1,35 @@
+syntax = "proto3";
+package auth_service;
+
+/*
+ * Prover registers in the server sending: (y1, y2)
+ *
+ */
+message  RegisterRequest {
+    string user = 1;
+    string password = 2;
+}
+
+message RegisterResponse {
+    bytes y1 = 1;
+    bytes y2 = 2;
+}
+
+/*
+ * Prover send solution to the challenge
+ * Verifier sends the Session ID if the solution is correct
+ */
+message AuthenticationAnswerRequest {
+    string user = 1;
+    string password = 2;
+    bytes y1 = 3;
+    bytes y2 = 4;
+}
+
+message AuthenticationAnswerResponse {
+}
+
+service Auth {
+    rpc Register(RegisterRequest) returns (RegisterResponse) {}
+    rpc VerifyAuthentication(AuthenticationAnswerRequest) returns (AuthenticationAnswerResponse) {}
+}

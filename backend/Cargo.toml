@@ -1,0 +1,23 @@
+[package]
+name = "backend"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-web = "4.6.0"
+prost = "0.12.6"
+tonic = "0.11.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1"
+futures = "0.3"
+diesel = { version = "2.1.6", features = ["postgres", "r2d2"] }
+diesel-async = { version = "0.4.1", features = ["postgres"] }
+deadpool-diesel = "0.6.1"
+jsonwebtoken = "9.3.0"
+chrono = "0.4.38"
+actix-service = "2.0.2"
+
+[build-dependencies]
+tonic-build = "0.11.0"

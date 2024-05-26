@@ -6,7 +6,37 @@ services:
       context: ./crypto_service
       dockerfile: Dockerfile
     ports:
-      - "50051:50051"
+      - 50051:50051
+    networks:
+      - trading_web3_network
+  
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@postgres/backend_db
+    ports:
+      - 8080:8080
+    volumes:
+      - ./backend:/backend
+    networks:
+      - trading_web3_network
+    depends_on:
+      - postgres
+  
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=backend_db
+    command: ["postgres", "-c", "log_statement=all"]
+    networks:
+      - trading_web3_network
+  
+  redis:
+    image: redis:latest
     networks:
       - trading_web3_network
 

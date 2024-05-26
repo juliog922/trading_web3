@@ -1,21 +1,20 @@
 # Use the official Rust image as a parent image
 FROM rust:latest
 
-RUN apt update
-RUN apt install -y protobuf-compiler
+RUN apt-get update && apt-get install -y protobuf-compiler
 
 # Set the working directory inside the container
-WORKDIR /crypto_service
+WORKDIR /backend
 
 COPY . .
 
 # Build the project
+RUN cargo install diesel_cli --no-default-features --features postgres
 RUN cargo build --release
+RUN cargo install cargo-watch
 
 # Expose the port on which your server will listen
-EXPOSE 50051
+EXPOSE 8080
 
 # Run your server when the container starts
-CMD ["cargo", "run", "--release"]
-
-
+CMD ["cargo", "watch", "--why", "-x", "build"]
