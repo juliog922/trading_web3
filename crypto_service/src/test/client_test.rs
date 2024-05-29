@@ -1,9 +1,10 @@
 use tokio;
-use crate::auth_service::{
+use crate::auth::auth_service::{
     auth_client::AuthClient, 
     AuthenticationAnswerRequest,
     RegisterRequest,
-    AuthenticationAnswerResponse
+    AuthenticationAnswerResponse,
+    PasswordRecoveryRequest
 };
 
 /// Module containing unit tests for the authentication server.
@@ -15,7 +16,7 @@ mod test {
     #[tokio::test]
     async fn test_auth_server() {
         // Connect to the gRPC server
-        let mut client = AuthClient::connect("http://127.0.0.1:50051")
+        let mut client = AuthClient::connect("http://localhost:50051")
             .await
             .expect("could not connect to the server");
         println!("✅ Connected to the server");
@@ -38,6 +39,7 @@ mod test {
 
         // Extract y2 and y1 from register response
         let register_response = &register_response.into_inner();
+        let secret_phrase = register_response.secret_phrase.clone();
         let y2 = register_response.y2.clone();
         let y1 = register_response.y1.clone();
 
@@ -57,6 +59,22 @@ mod test {
             .into_inner();
 
         // Assert that the authentication response is empty (for example)
-        assert_eq!(AuthenticationAnswerResponse {}, auth_response)
+        assert_eq!(AuthenticationAnswerResponse {}, auth_response);
+
+        // Create a PasswordRecoveryRequest
+        let recovery_request = PasswordRecoveryRequest {
+            secret_phrase: secret_phrase
+        };
+        // Send authentication request to the server
+        let recovery_response = client
+            .password_recovery(recovery_request)
+            .await
+            .expect("Could not verify authentication in server");
+
+        let recovery_response = &recovery_response.into_inner();
+        let password = recovery_response.password.clone();
+
+        assert_eq!("Guido".to_string(), password)
+
     }
 }

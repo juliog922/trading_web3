@@ -1,34 +1,23 @@
-use std::{collections::HashMap, sync::Mutex};
 use num_bigint::BigUint;
 use tonic::{Code, Request, Response, Status};
+use bip39::{
+    Mnemonic,
+    Language
+};
 use crate::auth::zkp::ZKP;
-use crate::auth_service::{
+use crate::auth::auth_service::{
     auth_server::Auth,
-    AuthenticationAnswerRequest, AuthenticationAnswerResponse,RegisterRequest, RegisterResponse,
+    AuthenticationAnswerRequest, 
+    AuthenticationAnswerResponse,
+    RegisterRequest, 
+    RegisterResponse,
+    PasswordRecoveryRequest,
+    PasswordRecoveryResponse
 };
 
 /// Implementation of the authentication service.
 #[derive(Debug, Default)]
-pub struct AuthImpl {
-    pub user_info: Mutex<HashMap<String, UserInfo>>,
-    pub auth_id_to_user: Mutex<HashMap<String, String>>,
-}
-
-/// Structure representing user information.
-#[derive(Debug, Default)]
-pub struct UserInfo {
-    // registration
-    pub user_name: String,
-    pub y1: BigUint,
-    pub y2: BigUint,
-    // authorization
-    pub r1: BigUint,
-    pub r2: BigUint,
-    // verification
-    pub c: BigUint,
-    pub s: BigUint,
-    pub session_id: String,
-}
+pub struct AuthImpl {}
 
 #[tonic::async_trait]
 impl Auth for AuthImpl {
@@ -42,7 +31,20 @@ impl Auth for AuthImpl {
         println!("Processing Registration username: {:?}", &user_name);
 
         let password = BigUint::from_bytes_be(request.password.trim().as_bytes());
+
+        let mut password_bytes = password.to_bytes_be();
+        if password_bytes.len() < 32 {
+            password_bytes.resize(32, 0);
+        } else if password_bytes.len() > 32 {
+            password_bytes.truncate(32);
+        }
         
+        let mnemonic = match Mnemonic::from_entropy(&password_bytes, Language::English) {
+            Ok(mnemonic) => mnemonic,
+            Err(_) => return Err(Status::new(Code::InvalidArgument, "Invalid password"))
+        };
+        let secret_phrase = mnemonic.phrase().to_string();
+
         let (alpha, beta, p, _) = ZKP::get_constants();
         let (y1, y2) = ZKP::compute_pair(&alpha, &beta, &p, &password);
 
@@ -50,7 +52,7 @@ impl Auth for AuthImpl {
         let y2 = y2.to_bytes_be();
 
         println!("✅ Successful Registration username: {:?}", user_name);
-        Ok(Response::new(RegisterResponse { y1, y2}))
+        Ok(Response::new(RegisterResponse { secret_phrase, y1, y2}))
     }
 
     async fn verify_authentication(
@@ -95,5 +97,37 @@ impl Auth for AuthImpl {
                 format!("User: {} bad solution to the challenge", user_name),
             ))
         }
+    }
+
+    async fn password_recovery(
+        &self,
+        request: Request<PasswordRecoveryRequest>,
+    ) -> Result<Response<PasswordRecoveryResponse>, Status> {
+        let request = request.into_inner();
+        let secret_phrase = request.secret_phrase;
+
+        let mnemonic = match Mnemonic::from_phrase(&secret_phrase, Language::English) {
+            Ok(mnemonic) => mnemonic,
+            Err(_) => return Err(Status::new(Code::InvalidArgument, "Invalid mnemonic phrase")),
+        };
+
+        let entropy: &[u8] = mnemonic.entropy();
+        match std::str::from_utf8(entropy) {
+            Ok(password) => {
+                println!("{}", password);
+                if let Some(pos) = password.find('\0') {
+                // Cortar la cadena hasta esa posición
+                let password = &password[..pos];
+                Ok(Response::new(PasswordRecoveryResponse{password: password.to_string()}))
+                } else {
+                    Ok(Response::new(PasswordRecoveryResponse{password: password.to_string()}))
+                }
+            },
+            Err(_) => Err(Status::new(
+                Code::PermissionDenied,
+                "Error: Invalid UTF-8 sequence",
+            )),
+        }
+        
     }
 }

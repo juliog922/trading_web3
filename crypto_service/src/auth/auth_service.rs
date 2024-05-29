@@ -13,9 +13,11 @@ pub struct RegisterRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegisterResponse {
-    #[prost(bytes = "vec", tag = "1")]
-    pub y1: ::prost::alloc::vec::Vec<u8>,
+    #[prost(string, tag = "1")]
+    pub secret_phrase: ::prost::alloc::string::String,
     #[prost(bytes = "vec", tag = "2")]
+    pub y1: ::prost::alloc::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
     pub y2: ::prost::alloc::vec::Vec<u8>,
 }
 ///
@@ -36,6 +38,18 @@ pub struct AuthenticationAnswerRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthenticationAnswerResponse {}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PasswordRecoveryRequest {
+    #[prost(string, tag = "1")]
+    pub secret_phrase: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PasswordRecoveryResponse {
+    #[prost(string, tag = "1")]
+    pub password: ::prost::alloc::string::String,
+}
 /// Generated client implementations.
 pub mod auth_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -171,6 +185,31 @@ pub mod auth_client {
                 .insert(GrpcMethod::new("auth_service.Auth", "VerifyAuthentication"));
             self.inner.unary(req, path, codec).await
         }
+        pub async fn password_recovery(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PasswordRecoveryRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::PasswordRecoveryResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/auth_service.Auth/PasswordRecovery",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("auth_service.Auth", "PasswordRecovery"));
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Generated server implementations.
@@ -192,6 +231,13 @@ pub mod auth_server {
             request: tonic::Request<super::AuthenticationAnswerRequest>,
         ) -> std::result::Result<
             tonic::Response<super::AuthenticationAnswerResponse>,
+            tonic::Status,
+        >;
+        async fn password_recovery(
+            &self,
+            request: tonic::Request<super::PasswordRecoveryRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::PasswordRecoveryResponse>,
             tonic::Status,
         >;
     }
@@ -349,6 +395,52 @@ pub mod auth_server {
                     let fut = async move {
                         let inner = inner.0;
                         let method = VerifyAuthenticationSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/auth_service.Auth/PasswordRecovery" => {
+                    #[allow(non_camel_case_types)]
+                    struct PasswordRecoverySvc<T: Auth>(pub Arc<T>);
+                    impl<
+                        T: Auth,
+                    > tonic::server::UnaryService<super::PasswordRecoveryRequest>
+                    for PasswordRecoverySvc<T> {
+                        type Response = super::PasswordRecoveryResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::PasswordRecoveryRequest>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as Auth>::password_recovery(&inner, request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = PasswordRecoverySvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(

@@ -12,6 +12,7 @@ COPY . .
 # Build the project
 RUN cargo build --release
 
+
 # Expose the port on which your server will listen
 EXPOSE 50051
 

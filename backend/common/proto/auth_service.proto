@@ -11,8 +11,9 @@ message  RegisterRequest {
 }
 
 message RegisterResponse {
-    bytes y1 = 1;
-    bytes y2 = 2;
+    string secret_phrase = 1;
+    bytes y1 = 2;
+    bytes y2 = 3;
 }
 
 /*
@@ -29,7 +30,16 @@ message AuthenticationAnswerRequest {
 message AuthenticationAnswerResponse {
 }
 
+message PasswordRecoveryRequest {
+    string secret_phrase = 1;
+}
+
+message PasswordRecoveryResponse {
+    string password = 1;
+}
+
 service Auth {
     rpc Register(RegisterRequest) returns (RegisterResponse) {}
     rpc VerifyAuthentication(AuthenticationAnswerRequest) returns (AuthenticationAnswerResponse) {}
+    rpc PasswordRecovery(PasswordRecoveryRequest) returns (PasswordRecoveryResponse) {}
 }

@@ -1,14 +1,9 @@
 use tonic::transport::Server;
 pub mod test;
-pub mod auth_service {
-    include!("./auth/auth_service.rs");
-}
-pub mod auth{
-    pub mod authimpl;
-    pub mod zkp;
-}
+pub mod auth;
+
 use crate::auth::authimpl::AuthImpl;
-use crate::auth_service::auth_server::AuthServer;
+use crate::auth::auth_service::auth_server::AuthServer;
 
 /// Main function to start the gRPC server.
 ///

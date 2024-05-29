@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - 50051:50051
+    volumes:
+      - ./crypto_service:/crypto_service
     networks:
       - trading_web3_network
   
@@ -32,11 +34,6 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=backend_db
     command: ["postgres", "-c", "log_statement=all"]
-    networks:
-      - trading_web3_network
-  
-  redis:
-    image: redis:latest
     networks:
       - trading_web3_network
 

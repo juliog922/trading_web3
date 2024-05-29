@@ -11,13 +11,15 @@ prost = "0.12.6"
 tonic = "0.11.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1"
-futures = "0.3"
 diesel = { version = "2.1.6", features = ["postgres", "r2d2"] }
-diesel-async = { version = "0.4.1", features = ["postgres"] }
-deadpool-diesel = "0.6.1"
-jsonwebtoken = "9.3.0"
-chrono = "0.4.38"
+chrono = { version = "0.4.38", default-features = false }
 actix-service = "2.0.2"
+ed25519-compact = "2.1.1"
+actix-jwt-auth-middleware = "0.5.0"
+rand_core = "0.6.4"
+jwt-compact = { version = "0.8.0", features = ["ed25519-compact"] }
+tokio = { version = "1.37.0", features = ["sync"] }
+
 
 [build-dependencies]
 tonic-build = "0.11.0"

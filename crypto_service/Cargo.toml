@@ -10,6 +10,7 @@ hex = "0.4.3"
 num-bigint = { version = "0.4.5", features = ["rand"] }
 prost = "0.12.6"
 rand = "0.8.5"
+tiny-bip39 = "1.0.0"
 tokio = { version = "1.37.0", features = ["macros", "rt-multi-thread"] }
 tonic = "0.11.0"
 

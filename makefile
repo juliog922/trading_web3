@@ -14,7 +14,7 @@ redo:
 	docker-compose exec backend diesel migration redo
 
 launch:
-	docker-compose exec backend cargo run
+	docker compose exec backend cargo run
 
 test: 
 	docker-compose exec crypto_service /bin/bash -c "cargo test"

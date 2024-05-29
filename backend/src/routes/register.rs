@@ -1,4 +1,4 @@
-use actix_web::{post, web, HttpResponse, Responder, Result};
+use actix_web::{post, web, HttpResponse, Responder, Result, error};
 use serde::Deserialize;
 use crate::auth::auth_service::{
     auth_client::AuthClient, 
@@ -7,7 +7,6 @@ use crate::auth::auth_service::{
 use crate::DbConn;
 use crate::models::users::NewUser;
 use crate::repositories::users::UsersRepository;
-use actix_web::error;
 
 #[derive(Deserialize, Clone)]
 struct RegisterRequestSchema {
@@ -15,10 +14,42 @@ struct RegisterRequestSchema {
     password: String
 }
 
+fn validate_password(password: &str) -> bool {
+    let uppercase = password.chars().any(|c| c.is_ascii_uppercase());
+    let digit = password.chars().any(|c| c.is_ascii_digit());
+    let lowercase = password.chars().any(|c| c.is_ascii_lowercase());
+    let max_length = (1..=32).contains(&password.len());
+    let min_length = (1..=16).contains(&password.len());
+    
+    uppercase && digit && max_length && !min_length && lowercase
+}
+
 #[post("/register")]
 pub async fn register(pool: web::Data<DbConn>, req: web::Json<RegisterRequestSchema>) -> Result<impl Responder> {
     let user = req.user.clone();
     let password = req.password.clone();
+
+    if !validate_password(&password) {
+        return Ok(HttpResponse::Unauthorized().json("Invalid password"));
+    }
+
+    let username = user.clone();
+
+    let first_pool = pool.clone();
+    let existed_user = web::block({
+        let username = username.clone();
+        move || {
+            let mut conn = first_pool.get()?;
+            UsersRepository::find_user_by_username(&mut conn, &username)
+        }
+    })
+    .await?
+    .map_err(error::ErrorInternalServerError)?;
+
+    match existed_user {
+        Some(_) => {return Ok(HttpResponse::Created().json("User created Succesfully"));},
+        None => {},
+    };
 
     // Connect to the gRPC server
     let mut client = AuthClient::connect("http://crypto_service:50051")
@@ -39,6 +70,7 @@ pub async fn register(pool: web::Data<DbConn>, req: web::Json<RegisterRequestSch
 
     // Extract y2 and y1 from register response
     let register_response = &register_response.into_inner();
+    let secret_phrase = register_response.secret_phrase.clone();
     let y2 = register_response.y2.clone();
     let y1 = register_response.y1.clone();
 
@@ -49,7 +81,7 @@ pub async fn register(pool: web::Data<DbConn>, req: web::Json<RegisterRequestSch
     };
 
     // use web::block to offload blocking Diesel queries without blocking server thread
-    let new_user_response = web::block(move || {
+    let _ = web::block(move || {
         // note that obtaining a connection from the pool is also potentially blocking
         let mut conn = pool.get()?;
 
@@ -60,5 +92,5 @@ pub async fn register(pool: web::Data<DbConn>, req: web::Json<RegisterRequestSch
         .map_err(error::ErrorInternalServerError)?;
 
     // user was added successfully; return 201 response with new user info
-    Ok(HttpResponse::Created().json(new_user_response))
+    Ok(HttpResponse::Created().json(secret_phrase))
 }
