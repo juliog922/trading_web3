@@ -1,4 +1,4 @@
-use actix_web::{put, web, HttpResponse, Responder, Result};
+use actix_web::{put, web, HttpResponse, Responder, Result, error};
 use serde::Deserialize;
 use crate::auth::auth_service::{
     auth_client::AuthClient, 
@@ -8,10 +8,10 @@ use crate::auth::auth_service::{
 use crate::DbConn;
 use crate::models::users::NewUser;
 use crate::repositories::users::UsersRepository;
-use actix_web::error;
+use crate::utils::validation::validate_password;
 
 #[derive(Deserialize, Clone)]
-struct ResetDataSchema {
+pub struct ResetDataSchema {
     user: String,
     secret_phrase: String,
     new_password: String
@@ -22,6 +22,10 @@ pub async fn reset(pool: web::Data<DbConn>, req: web::Json<ResetDataSchema>) -> 
     let username = req.user.clone();
     let secret_phrase = req.secret_phrase.clone();
     let new_password = req.new_password.clone();
+
+    if !validate_password(&new_password) {
+        return Ok(HttpResponse::Unauthorized().json("Invalid password"));
+    }
 
     let user = web::block({
         let username = username.clone();

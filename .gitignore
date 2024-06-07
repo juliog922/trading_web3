@@ -1,1 +1,4 @@
-/target
+/backend/target
+/blockchain/target
+/crypto_service/target
+/api_test

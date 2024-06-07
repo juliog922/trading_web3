@@ -1,5 +1,5 @@
 use actix_web::{post, web, HttpResponse, Responder, Result, error};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use crate::auth::auth_service::{
     auth_client::AuthClient, 
     RegisterRequest,    
@@ -7,22 +7,16 @@ use crate::auth::auth_service::{
 use crate::DbConn;
 use crate::models::users::NewUser;
 use crate::repositories::users::UsersRepository;
+use crate::utils::validation::validate_password;
 
-#[derive(Deserialize, Clone)]
-struct RegisterRequestSchema {
-    user: String,
-    password: String
+
+#[derive(Deserialize, Clone, Serialize)]
+pub struct RegisterRequestSchema {
+    pub user: String,
+    pub password: String
 }
 
-fn validate_password(password: &str) -> bool {
-    let uppercase = password.chars().any(|c| c.is_ascii_uppercase());
-    let digit = password.chars().any(|c| c.is_ascii_digit());
-    let lowercase = password.chars().any(|c| c.is_ascii_lowercase());
-    let max_length = (1..=32).contains(&password.len());
-    let min_length = (1..=16).contains(&password.len());
-    
-    uppercase && digit && max_length && !min_length && lowercase
-}
+
 
 #[post("/register")]
 pub async fn register(pool: web::Data<DbConn>, req: web::Json<RegisterRequestSchema>) -> Result<impl Responder> {

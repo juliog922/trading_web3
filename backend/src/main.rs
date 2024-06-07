@@ -16,6 +16,7 @@ mod models;
 mod repositories;
 mod auth;
 mod utils;
+mod test;
 
 use crate::routes::{
     register::register,

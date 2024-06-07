@@ -10,7 +10,7 @@ use crate::{DbConn, JWTUser, AttempsData};
 use crate::repositories::users::UsersRepository;
 
 #[derive(Deserialize, Clone)]
-struct AuthorizeRequestSchema {
+pub struct AuthorizeRequestSchema {
     user: String,
     password: String,
 }

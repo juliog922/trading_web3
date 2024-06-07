@@ -10,7 +10,7 @@ use crate::repositories::users::UsersRepository;
 use actix_web::error;
 
 #[derive(Deserialize, Clone)]
-struct PasswordRecoverySchema {
+pub struct PasswordRecoverySchema {
     user: String,
     secret_phrase: String
 }
